@@ -48,6 +48,7 @@ new ExtractTextPlugin([id: string], filename: string, [options])
 * `options`
   * `allChunks` extract from all additional chunks too (by default it extracts only from the initial chunk(s))
   * `disable` disables the plugin
+  * `keepCSSFileReference` - bool - re-inline CSS file reference
 
 The `ExtractTextPlugin` generates an output file per entry, so you must use `[name]`, `[id]` or `[contenthash]` when using multiple entries.
 

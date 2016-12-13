@@ -2,13 +2,14 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
+var fs = require('fs')
+var path = require('path')
 var ConcatSource = require("webpack-sources").ConcatSource;
 var async = require("async");
 var ExtractedModule = require("./ExtractedModule");
 var Chunk = require("webpack/lib/Chunk");
 var OrderUndefinedError = require("./OrderUndefinedError");
 var loaderUtils = require("loader-utils");
-
 var nextId = 0;
 
 function ExtractTextPluginCompilation() {
@@ -178,6 +179,22 @@ ExtractTextPlugin.prototype.extract = function(before, loader, options) {
 
 ExtractTextPlugin.prototype.apply = function(compiler) {
 	var options = this.options;
+	compiler.plugin("after-emit", (compilation, callback) => {
+			if (options.keepCSSFileReference) {
+				console.log('Re-inline CSS file references')
+				var jsFiles = Object.keys(compilation.assets).filter(function(f) {
+					return f.match(/\.js/)
+				})
+				jsFiles.forEach(function(filename) {
+					var fpath = path.join(compilation.outputOptions.path, filename)
+					var content = fs.readFileSync(fpath, 'utf8')
+					var replace = content.replace(/\/\/module.exports.externedCSS/g, 'module.exports.externedCSS')
+					fs.writeFileSync(fpath, replace)
+					console.log('Write file', fpath)
+				})
+			}
+		callback();
+	})
 	compiler.plugin("this-compilation", function(compilation) {
 		var extractCompilation = new ExtractTextPluginCompilation();
 		compilation.plugin("normal-module-loader", function(loaderContext, module) {

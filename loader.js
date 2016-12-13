@@ -9,7 +9,7 @@ var LibraryTemplatePlugin = require("webpack/lib/LibraryTemplatePlugin");
 var SingleEntryPlugin = require("webpack/lib/SingleEntryPlugin");
 var LimitChunkCountPlugin = require("webpack/lib/optimize/LimitChunkCountPlugin");
 var path = require('path');
-	
+
 module.exports = function(source) {
 	if(this.cacheable) this.cacheable();
 	return source;
@@ -114,7 +114,7 @@ module.exports.pitch = function(request) {
 					return callback(e);
 				}
 				if(resultSource) {
-					
+
 					/* if option keepCSSFileReference true
 					    { test: /\.css/, loader: ExtractTextPlugin.extract(
 						  'style-loader',
@@ -128,10 +128,10 @@ module.exports.pitch = function(request) {
 						var fileName = path.basename(filepath, '.css')
 						var fileNameBase = fileName.split('.')
 						resultSource += "\n/* Externalize CSS and re-include for PostCSS */\n";
-						resultSource += "\n//ignoremodule.exports = require(\"./"+fileNameBase[0]+ ".css\");\n"
+						resultSource += "\n//module.exports.externedCSS = require(\"./"+fileNameBase[0]+ ".css\");\n"
 					}
 					callback(null, resultSource);
-				} else {	
+				} else {
 			    	callback();
 				}
 			}.bind(this));
