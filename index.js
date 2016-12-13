@@ -190,7 +190,6 @@ ExtractTextPlugin.prototype.apply = function(compiler) {
 					var content = fs.readFileSync(fpath, 'utf8')
 					var replace = content.replace(/\/\/module.exports.externedCSS/g, 'module.exports.externedCSS')
 					fs.writeFileSync(fpath, replace)
-					console.log('Write file', fpath)
 				})
 			}
 		callback();
