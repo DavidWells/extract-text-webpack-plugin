@@ -107,6 +107,14 @@ module.exports = {
 };
 ```
 
+## Using Fork
+
+In deps, point to github version + branch
+
+```
+ "extract-text-webpack-plugin": "git://github.com/DavidWells/extract-text-webpack-plugin.git#webpack-1",
+```
+
 ## License
 
 MIT (http://www.opensource.org/licenses/mit-license.php)
